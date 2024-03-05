@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGPA Calculator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Poppins',sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+        }
+        form {
+            background-color: #ccc; /* Changed to grey */
+            color: #333; /* Text color changed to a darker grey for better readability */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100px;
+            padding: 5px;
+            margin: 5px 0;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 150px;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <form id="sgpaForm">
+        <label for="numSubjects">Number of Subjects:</label>
+        <input type="number" id="numSubjects" name="numSubjects" min="1" required><br>
+        
+        <div id="subjectInputs"></div>
+        
+        <input type="submit" value="Calculate SGPA">
+        <div id="result"></div> <!-- Result will be displayed here -->
+    </form>
+
+    <script>
+        document.getElementById("sgpaForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            calculateSGPA();
+        });
+
+        function calculateSGPA() {
+            var numSubjects = parseInt(document.getElementById("numSubjects").value);
+            var totalGradePoints = 0;
+            var totalCredits = 0;
+
+            for (var i = 1; i <= numSubjects; i++) {
+                var creditPoints = parseFloat(document.getElementById("creditPoints_" + i).value);
+                var gradeCharacter = document.getElementById("gradeCharacter_" + i).value;
+
+                var gradePoints = convertGradeToPoints(gradeCharacter);
+                
+                totalGradePoints += creditPoints * gradePoints;
+                totalCredits += creditPoints;
+            }
+
+            var sgpa = totalGradePoints / totalCredits;
+
+            // Display the result inside the div
+            document.getElementById("result").innerText = "Your SGPA is: " + sgpa.toFixed(2);
+        }
+
+        function convertGradeToPoints(grade) {
+            switch(grade) {
+                case 'O':
+                    return 10;
+                case 'A+':
+                    return 9;
+                case 'A':
+                    return 8;
+                case 'B+':
+                    return 7;
+                case 'B':
+                    return 6;
+                case 'C':
+                    return 5;
+                case 'U':
+                    return 0;
+                default:
+                    return 0; // Default to 0 if grade not recognized
+            }
+        }
+
+        document.getElementById("numSubjects").addEventListener("change", function() {
+            var numSubjects = parseInt(this.value);
+            var subjectInputsHTML = '';
+
+            for (var i = 1; i <= numSubjects; i++) {
+                subjectInputsHTML += `
+                    <label for="creditPoints_${i}">Credit${i}:</label>
+                    <input type="number" id="creditPoints_${i}" name="creditPoints_${i}" min="1" required>
+                    <label for="gradeCharacter_${i}">Grade ${i}:</label>
+                    <select id="gradeCharacter_${i}" name="gradeCharacter_${i}">
+                        <option value="O">O</option>
+                        <option value="A+">A+</option>
+                        <option value="A">A</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="U">U</option>
+                    </select><br>
+                `;
+            }
+
+            document.getElementById("subjectInputs").innerHTML = subjectInputsHTML;
+        });
+    </script>
+</body>
+</html>
