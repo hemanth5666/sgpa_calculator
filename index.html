@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#000"> <!-- Specify theme color -->
-    <meta name="format-detection" content="telephone=no"> <!-- Disable auto-detection of phone numbers -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Ensure use of the latest IE rendering engine -->
-    <meta name="HandheldFriendly" content="true"> <!-- Specify that the site is handheld friendly -->
-  
     <title>SGPA Calculator</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-
+        ::-webkit-scrollbar {
+            display: none; }
         body {
             font-family: 'Poppins',sans-serif;
             margin: 0;
@@ -21,6 +17,12 @@
             align-items: center;
             height: 100vh;
             background-color: #000;
+        }
+        #container {
+            height: 90%; /* Adjust the height as per your requirement */
+            overflow: auto; /* Enable scrolling */
+            width: 465px;
+            margin: 3px;
         }
         form {
             background-color: #ccc; /* Changed to grey */
@@ -63,15 +65,17 @@
     </style>
 </head>
 <body>
-    <form id="sgpaForm">
-        <label for="numSubjects">Number of Subjects:</label>
-        <input type="number" id="numSubjects" name="numSubjects" min="1" required><br>
-        
-        <div id="subjectInputs"></div>
-        
-        <input type="submit" value="Calculate SGPA">
-        <div id="result"></div> <!-- Result will be displayed here -->
-    </form>
+    <div id="container">
+        <form id="sgpaForm">
+            <label for="numSubjects">Number of Subjects:</label>
+            <input type="number" id="numSubjects" name="numSubjects" min="1" required><br>
+            
+            <div id="subjectInputs"></div>
+            
+            <input type="submit" value="Calculate SGPA">
+            <div id="result"></div> <!-- Result will be displayed here -->
+        </form>
+    </div>
 
     <script>
         document.getElementById("sgpaForm").addEventListener("submit", function(event) {
